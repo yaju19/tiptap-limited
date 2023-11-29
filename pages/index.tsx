@@ -14,9 +14,6 @@ export default function Root() {
   return (
     <div className="flex flex-col px-12 py-12 bg-gray-50">
       <div className="flex flex-col gap-y-4">
-      <FontAwesomeIcon                 
-        icon={faFilePdf}
-        />
         <div className="text-xl font-semibold">TipTap</div>
         <Tiptap /> 
         {/* <HtmlToJSON /> */}
