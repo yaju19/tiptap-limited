@@ -3,7 +3,6 @@ import StarterKit from '@tiptap/starter-kit'
 import { EditorState } from '@tiptap/pm/state'
 import Underline from '@tiptap/extension-underline' 
 import Italic from '@tiptap/extension-italic' 
-import Image from '@tiptap/extension-image'
 import Dropcursor from '@tiptap/extension-dropcursor'
 import TipTapToolbar from './TiptapToolbar'
 import Table from '@tiptap/extension-table'
@@ -11,6 +10,8 @@ import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import TableRow from '@tiptap/extension-table-row'
 import ResizableImageExtension from "./ImgaeResize"
+import CustomImage from "./CustomImage"
+import Iframe from "./Iframe"
 
 //react
 import React from "react"
@@ -21,7 +22,7 @@ const Tiptap = () => {
       StarterKit,
       Underline,
       Italic,
-      Image,
+      CustomImage,
       Dropcursor,
       Table.configure({
         resizable: true,
@@ -29,7 +30,8 @@ const Tiptap = () => {
       TableRow,
       TableHeader,
       TableCell,
-      ResizableImageExtension
+      ResizableImageExtension,
+      Iframe
     ],
     content: '<p>Example <strong>Text</strong> to <u>understand</u> the text <i>formatting</i>.',
   })
@@ -49,16 +51,26 @@ const Tiptap = () => {
 
   const addImage = () => {
     const url = prompt('Enter the URL of the image:');
+    const width = prompt('Enter the width of the image:') || '600'
     if (url) {
-      editor?.chain().focus().setImage({ src: url }).run();
+      editor?.chain().focus().setCustomImage({ src: url, width: width,
+      height: `${(Number(width))*0.75}`, }).run();
+
     }
   };
-
   const addTable=()=>{
     editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
   }
   const removeTable=()=>{
     editor?.chain().focus().deleteTable().run()
+  }
+  const addIframe=()=> {
+    const url = window.prompt('URL')
+    const width = prompt('Width:') || '600'
+
+    if (url) {
+      editor?.chain().focus().setIframe({ src: url, width:width, height: width }).run()
+    }
   }
 
   React.useEffect(()=>{
@@ -72,7 +84,7 @@ const Tiptap = () => {
 
   return (
     <div className="border-2 border-solid border-gray-300 rounded-md p-4">
-    <TipTapToolbar applyFormat={applyFormat}  addImage={addImage} addTable={addTable} removeTable={removeTable}/>
+    <TipTapToolbar applyFormat={applyFormat}  addImage={addImage} addTable={addTable} removeTable={removeTable} addIframe={addIframe}/>
     <EditorContent className="" editor={editor} />
     </div>
 
